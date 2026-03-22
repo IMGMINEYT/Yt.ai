@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern YT AI Loop</title>
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #00f2ff;
+            --error: #ff4d4d;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Inter', -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top Header Style */
+        .header {
+            position: absolute;
+            top: 20px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .header span {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Loading Screen Container */
+        #container {
+            width: 320px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.5s ease;
+        }
+
+        /* Modern Spinner */
+        .spinner-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error Popup Style */
+        .error-content {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .error-icon {
+            font-size: 2.5rem;
+            color: var(--error);
+            margin-bottom: 10px;
+        }
+
+        .error-code {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--error);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .status-text {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">YT AI <span>FROM GOOGLE</span></div>
+
+    <div id="container">
+        <div id="loading-state" class="spinner-box">
+            <div class="spinner"></div>
+            <p class="status-text">Synchronizing data...</p>
+        </div>
+
+        <div id="error-state" class="error-content">
+            <div class="error-icon">✕</div>
+            <h3 style="margin:0">Request Failed</h3>
+            <div class="error-code">ERROR 435</div>
+            <p class="status-text">Restarting sequence...</p>
+        </div>
+    </div>
+
+    <script>
+        const loadingState = document.getElementById('loading-state');
+        const errorState = document.getElementById('error-state');
+        const container = document.getElementById('container');
+
+        function startLoop() {
+            // Show Loading
+            loadingState.style.display = 'flex';
+            errorState.style.display = 'none';
+            container.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+
+            // Wait 3 seconds
+            setTimeout(() => {
+                // Show Error
+                loadingState.style.display = 'none';
+                errorState.style.display = 'block';
+                container.style.borderColor = 'rgba(255, 77, 77, 0.3)';
+
+                // Wait 2 seconds then restart
+                setTimeout(() => {
+                    startLoop();
+                }, 2000);
+
+            }, 3000);
+        }
+
+        // Start the infinite sequence
+        startLoop();
+    </script>
+</body>
+</html>
+
